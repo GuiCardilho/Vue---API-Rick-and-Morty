@@ -14,7 +14,16 @@
             <div>
                 <div v-if="dataFinal != null" class="cards-container">
                     <div v-for="(data,index) in dataFinal" :key="index">
-                        <CardIndividual :Data="data" :Action="cardAction" ></CardIndividual>
+                        <CardIndividual 
+                        :Data="data" 
+                        :Action="cardAction" 
+                        :Index="index" 
+                        :IndexCarrosel="indexCarrosel"  
+                        @MudarAnterior="RemoverContadorCarrosel" 
+                        @MudarProximo="AdicionarContadorCarrosel"
+                        :MaximoIndex="tamhanhoMaximoCarrosel"
+                        >
+                        </CardIndividual>
                     </div>
                 </div>
             </div>
@@ -35,7 +44,8 @@ import CardIndividual from './CardIndividual.vue'
             opcaoPesquisar: "character",
             dataPersonagens: null,
             dataFinal: null,
-            cardAction: false
+            cardAction: false,
+            indexCarrosel: 0,
         };
     },
     methods: {
@@ -52,7 +62,9 @@ import CardIndividual from './CardIndividual.vue'
                 api.get(`${this.url}`).then((response) => {
                     this.cardAction = !this.cardAction;
                     this.dataPersonagens = response.data;
+                    this.indexCarrosel = 0
                     this.ValidadorData()
+                    
                 });
 
             }
@@ -76,8 +88,24 @@ import CardIndividual from './CardIndividual.vue'
                     this.dataFinal = this.dataPersonagens.results
                 }
                 
+                this.tamhanhoMaximoCarrosel = this.dataFinal.length - 1
             }
-        }
+        },
+
+        AdicionarContadorCarrosel(){
+            if ((this.dataFinal.length-1) > this.indexCarrosel){
+                this.indexCarrosel = this.indexCarrosel + 1
+                this.cardAction = !this.cardAction;
+            }
+        },
+
+        RemoverContadorCarrosel(){
+            if (this.indexCarrosel > 0){
+                this.indexCarrosel = this.indexCarrosel - 1
+                this.cardAction = !this.cardAction;
+            }
+        },
+
     },
     components: { CardIndividual }
 }

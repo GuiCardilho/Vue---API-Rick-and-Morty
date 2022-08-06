@@ -1,9 +1,9 @@
 <template>
-    <div class="main-container-card">
+    <div class="main-container-card" v-if="Index == IndexCarrosel">
         <div class="img-container-card">
-            <div class="button-anterior-container"><button class="button-anterior"> <h1>←</h1> </button></div>
+            <div class="button-anterior-container" @click="Emitir('MudarAnterior')" v-if="Index != 0"><button class="button-anterior" > <h1>←</h1> </button></div>
             <img :src="Data.image"/>
-            <div class="button-proximo-container"><button class="button-proximo"> <h1>→</h1> </button></div>
+            <div class="button-proximo-container" @click="Emitir('MudarProximo')" v-if="MaximoIndex != Index"><button class="button-proximo"> <h1>→</h1> </button></div>
         </div>
 
         <div class="text-container-card">
@@ -23,7 +23,12 @@
         props: {
             Data: Object,
             Action: Boolean,
+            Index: Number,
+            IndexCarrosel: Number,
+            MaximoIndex: Number,
         },
+        emits: ['MudarAnterior','MudarProximo'],
+
 
         data(){
             return{
@@ -51,11 +56,16 @@
                             this.classText[4] = "text-individual-container-card"
                             setTimeout(() =>{
                                 this.classText[0] = "text-individual-container-card"
-                            },1000)
-                        },1000)
-                    },1000)
-                },1000)
-            }
+                            },250)
+                        },250)
+                    },250)
+                },250)
+            },
+
+            Emitir(local){
+                this.$emit(local);
+            },
+
         },
         
         mounted() {
@@ -85,7 +95,7 @@
     /*----------- AREA DA IMAGEM -----------*/
     .img-container-card{
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         width: 100%;
     }
     .img-container-card img{
@@ -93,7 +103,6 @@
         border: 2px solid #d8d8d9;
         margin: 10px 0px;
         box-shadow: 1px 1px 7px 1px #d8d8d9;
-        
     }
 
     /*----------- AREA DO TEXTO -----------*/
@@ -117,7 +126,7 @@
 
         animation:
         blinkCursor 500ms steps(41) infinite normal,
-        textAnimation 2s steps(41)  1s normal both;
+        textAnimation 0.5s steps(41)  1s normal both;
     }
     
     .text-individual-container-card h1 span{
@@ -153,12 +162,17 @@
     .button-proximo-container{
         position: relative;
         align-self: flex-end;
-        left: 100px;
+        bottom: 90px;
+        left: 200px;
+        
+
     }
     .button-anterior-container{
         position: relative;
         align-self: flex-end;
-        right: 100px;
+        bottom: 90px;
+        right:275px;
+        
     }
     .button-anterior, .button-proximo{
         padding: 10px 15px;
@@ -168,6 +182,33 @@
         font-size: 20px;
         background-color: transparent;
         box-shadow: 0px 0px 7px 1px #d8d8d9;
+        position:absolute;
+        cursor: pointer;
+        overflow: hidden;
+        transition: 0.5s;
+    }
+
+    .button-anterior:hover, .button-proximo:hover{
+        animation: buttonAnimation 1.5s infinite normal;
+    }
+
+    .button-anterior:active, .button-proximo:active{
+        animation: buttonAnimation 1.5s infinite normal;
+        box-shadow: 0px 0px 7px 1px #520066;
+    }
+
+
+
+    @keyframes buttonAnimation{
+        0%{
+            background-color: transparent;
+        }
+        50%{
+            background-color: #d8d8d9b9;
+        }
+        100%{
+            background-color: transparent;
+        }
     }
 
 </style>
