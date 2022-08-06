@@ -14,7 +14,7 @@
             <div>
                 <div v-if="dataFinal != null" class="cards-container">
                     <div v-for="(data,index) in dataFinal" :key="index">
-                        <CardIndividual :Data="data"></CardIndividual>
+                        <CardIndividual :Data="data" :Action="cardAction" ></CardIndividual>
                     </div>
                 </div>
             </div>
@@ -35,6 +35,7 @@ import CardIndividual from './CardIndividual.vue'
             opcaoPesquisar: "character",
             dataPersonagens: null,
             dataFinal: null,
+            cardAction: false
         };
     },
     methods: {
@@ -49,6 +50,7 @@ import CardIndividual from './CardIndividual.vue'
 
                 this.url = `/${this.opcaoPesquisar}/${this.valorPesquisar}`;
                 api.get(`${this.url}`).then((response) => {
+                    this.cardAction = !this.cardAction;
                     this.dataPersonagens = response.data;
                     this.ValidadorData()
                 });
@@ -83,7 +85,7 @@ import CardIndividual from './CardIndividual.vue'
 
 <style scoped>
     .main-container{
-        background-color:#262626;
+        background-color:#191919;
         width:100%;
         min-height:1000px;
     }
