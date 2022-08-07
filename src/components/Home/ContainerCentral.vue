@@ -37,6 +37,8 @@ import CardIndividual from './CardIndividual.vue'
 
     export default{
     name: "ContainerCentral",
+    components: { CardIndividual },
+
     data() {
         return {
             valorPesquisar: "",
@@ -48,15 +50,12 @@ import CardIndividual from './CardIndividual.vue'
             indexCarrosel: 0,
         };
     },
+    
     methods: {
         PesquisarApi() {
             if( this.valorInserido != "" && this.valorInserido != 0){
-                if (this.opcaoPesquisar == "character") {
-                    this.VerificadorNameID();
-                }else{
-                    this.valorPesquisar = this.valorInserido
-                }
 
+                this.VerificadorNameID();
 
                 this.url = `/${this.opcaoPesquisar}/${this.valorPesquisar}`;
                 api.get(`${this.url}`).then((response) => {
@@ -64,9 +63,8 @@ import CardIndividual from './CardIndividual.vue'
                     this.dataPersonagens = response.data;
                     this.indexCarrosel = 0
                     this.ValidadorData()
-                    
+        
                 });
-
             }
         },
 
@@ -80,15 +78,41 @@ import CardIndividual from './CardIndividual.vue'
         },
 
         ValidadorData(){
+
             if (this.opcaoPesquisar == "character") {
                 this.dataFinal = []
+
                 if (this.valorInserido > 0){
                     this.dataFinal.push(this.dataPersonagens)
                 }else{
                     this.dataFinal = this.dataPersonagens.results
                 }
-                
+
                 this.tamhanhoMaximoCarrosel = this.dataFinal.length - 1
+            }
+
+            else if (this.opcaoPesquisar == "location") {
+                    this.dataPesquisar = this.dataPersonagens.residents
+                    this.PesquisarUrlIndividual()
+                }
+
+            else if (this.opcaoPesquisar == "episode") {
+                    this.dataPesquisar = this.dataPersonagens.characters
+                    this.PesquisarUrlIndividual()
+                }
+                
+                
+        },
+
+        PesquisarUrlIndividual(){
+            this.dataFinal = []
+
+            for (var i in this.dataPesquisar){
+                api.get(`${this.dataPesquisar[i]}`).then((response) => {
+                    this.dataPersonagensIndividual = response.data;
+                    this.dataFinal.push(this.dataPersonagensIndividual)
+                    this.tamhanhoMaximoCarrosel = this.dataFinal.length - 1
+                });
             }
         },
 
@@ -107,7 +131,6 @@ import CardIndividual from './CardIndividual.vue'
         },
 
     },
-    components: { CardIndividual }
 }
 </script>
 

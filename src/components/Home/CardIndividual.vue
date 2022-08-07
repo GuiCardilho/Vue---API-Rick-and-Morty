@@ -12,6 +12,7 @@
             <div :class="classText[2]"><h1><span>Genero: </span>{{Data.gender}}</h1></div>
             <div :class="classText[3]"><h1><span>Status: </span>{{Data.status}}</h1></div>
             <div :class="classText[4]"><h1><span>Origem: </span>{{Data.origin.name}}</h1></div>
+            <div :class="classText[5]"><h1><span>Localização: </span>{{Data.location.name}}</h1></div>
         </div>
         
     </div>
@@ -32,13 +33,13 @@
 
         data(){
             return{
-                classText: ["text-transparente","text-transparente","text-transparente","text-transparente","text-transparente",],
+                classText: ["text-transparente","text-transparente","text-transparente","text-transparente","text-transparente","text-transparente",],
             }
         },
 
         watch: {
             Action(){
-                this.classText = ["text-transparente","text-transparente","text-transparente","text-transparente","text-transparente",]
+                this.classText = ["text-transparente","text-transparente","text-transparente","text-transparente","text-transparente","text-transparente",]
                 setTimeout(() =>{
                     this.AnimacaoEscrita()},50)
                 }
@@ -46,7 +47,7 @@
 
         methods: {
             AnimacaoEscrita(){
-                this.classText = ["text-transparente","text-transparente","text-transparente","text-transparente","text-transparente",]
+                this.classText = ["text-transparente","text-transparente","text-transparente","text-transparente","text-transparente","text-transparente",]
                 this.classText[1] = "text-individual-container-card"
                 setTimeout(() =>{
                     this.classText[3] = "text-individual-container-card"
@@ -56,6 +57,9 @@
                             this.classText[4] = "text-individual-container-card"
                             setTimeout(() =>{
                                 this.classText[0] = "text-individual-container-card"
+                                setTimeout(() =>{
+                                    this.classText[5] = "text-individual-container-card"
+                                },250)
                             },250)
                         },250)
                     },250)
